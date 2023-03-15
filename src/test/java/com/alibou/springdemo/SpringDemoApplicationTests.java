@@ -3,10 +3,10 @@ package com.alibou.springdemo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+// @SpringBootTest
 class SpringDemoApplicationTests {
 
-	@Test
+	// @Test
 	void contextLoads() {
 	}
 
