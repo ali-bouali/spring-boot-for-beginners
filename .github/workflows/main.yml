@@ -42,10 +42,13 @@ jobs:
           mvn -B package --file pom.xml
 
   build-and-publish:
-    name: Building Docker image
+    name: Building & Publishing Docker image
     runs-on: ubuntu-latest
     needs: [test, build]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Build Docker Image
         uses: docker/build-push-action@v2
         with:
