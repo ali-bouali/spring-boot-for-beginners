@@ -6,15 +6,15 @@ on:
       - main
 
 jobs:
-  build-ap:
-    runs-on: ubuntu-latest
 
   checkout-code:
+    name: Checkout the code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
   test:
+    name: Running UT
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
@@ -27,6 +27,7 @@ jobs:
         run: mvn -B test --file pom.xml
 
   build:
+    name: Building the API
     runs-on: ubuntu-latest
     steps:
       - name: Build with Maven
@@ -35,6 +36,7 @@ jobs:
           mvn -B package --file pom.xml
 
   build-docker:
+    name: Building Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Build Docker Image
@@ -45,6 +47,7 @@ jobs:
           push: false
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-boot-for-beginners:latest
   publish:
+    name: Deploy to DockerHub
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
