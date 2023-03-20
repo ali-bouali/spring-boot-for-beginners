@@ -6,27 +6,37 @@ on:
       - main
 
 jobs:
-  build:
+  build-ap:
     runs-on: ubuntu-latest
 
+  checkout-code:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+  test:
+    runs-on: ubuntu-latest
+    steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'coretto'
           java-version: '17'
 
+      - name: Run Tests
+        run: mvn -B test --file pom.xml
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: Build with Maven
         run: |
           mvn clean
           mvn -B package --file pom.xml
 
-      - name: Run Tests
-        run: mvn -B test --file pom.xml
-
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
       - name: Build Docker Image
         uses: docker/build-push-action@v2
         with:
@@ -34,7 +44,9 @@ jobs:
           dockerfile: Dockerfile
           push: false
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-boot-for-beginners:latest
-
+  publish:
+    runs-on: ubuntu-latest
+    steps:
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
